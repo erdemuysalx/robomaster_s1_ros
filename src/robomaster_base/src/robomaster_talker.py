@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-from std_msgs.msg import String, Float64
 from sensor_msgs.msg import Image
+from robomaster_msgs.msg import ImuAccGyro
 from cv_bridge import CvBridge, CvBridgeError
 from robomaster import robot
 
@@ -15,7 +15,7 @@ class RobomasterTalker():
         self.camera = self.robot.camera
         self.bridge = CvBridge()
         self.img_pub = rospy.Publisher('/robomaster/image', Image, queue_size=1)
-        self.imu_pub = rospy.Publisher('/robomaster/imu', Float64, queue_size=10)
+        self.imu_pub = rospy.Publisher('/robomaster/imu', ImuAccGyro, queue_size=10)
         self.imu_data_handler = self.chassis.sub_imu(freq=5, callback=self.set_imu_data)
         self.rate = rospy.Rate(10)
 
@@ -31,9 +31,9 @@ class RobomasterTalker():
         for i in range(0, 200):
             img = self.camera.read_cv2_image()
             try:
-                img = self.bridge.cv2_to_imgmsg(img, "bgr8")
+                image = self.bridge.cv2_to_imgmsg(img, "bgr8")
                 self.camera.stop_video_stream()
-                return img
+                return image
             except CvBridgeError as e:
                 print(e)
 
@@ -64,9 +64,14 @@ class RobomasterTalker():
         imu_msg -- ROS message for imu data 
         """
         acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z = self.set_imu_data()
-        imu_msg = String()
-        imu_msg = "acc_x: {}, acc_y: {}, acc_y: {}, gyro_x: {}, gyro_y: {}, gyro_z: {}".format(acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z)
-        return imu_msg
+        imu_acc_gyro = ImuAccGyro()
+        imu_acc_gyro.acc_x = acc_x
+        imu_acc_gyro.acc_y = acc_y
+        imu_acc_gyro.acc_y = acc_y
+        imu_acc_gyro.gyro_x = gyro_x
+        imu_acc_gyro.gyro_y = gyro_y
+        imu_acc_gyro.gyro_z =gyro_z
+        return imu_acc_gyro
 
 
 if __name__ == '__main__':
