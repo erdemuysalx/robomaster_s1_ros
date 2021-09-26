@@ -26,10 +26,14 @@ A -- Python SDK --> C((Listener Node)) -- ROS Topic --> D
 
 This node reads/listens the data produced at Robomaster using Python SDK, and then writes/talks the obtained data to the relevant ROS topics as ROS messages.
 #### Published Topics
-`sensor_msgs/Image.msg` to  `/robomaster/image` 
+`sensor_msgs/Image.msg` to  `/robomaster/image`
+
 `sensor_msgs/Imu.msg` to `/robomaster/imu`
+
 `sensor_msgs/Quaternion.msg` to `/robomaster/attitude`
+
 `---` to `/robomaster/esc`
+
 `std_msgs/Float64.msg` to `/robomaster/battery`
 
 ### Listener Node
@@ -38,6 +42,7 @@ This node reads/listens the ROS messages which are sent from other machines, suc
 
 #### Subscribed Topics
 `geometyr_msgs/Twist.msg` from `/robomaster/chassis`
+
 `geometyr_msgs/Twist.msg` from `/robomaster/gimbal`
 
 ### Parameters
