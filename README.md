@@ -13,11 +13,12 @@ This repository consist of a ROS wrapper writter on top of Robomaster SDK. The R
 
 ## Structure
 
-```
-flowchart LR
+```mermaid
+graph LR
 A[Robomaster S1] -- Python SDK --> B((Talker Node))
 B -- ROS Topic --> D{ROS Master}
 A -- Python SDK --> C((Listener Node)) -- ROS Topic --> D
+```on SDK --> C((Listener Node)) -- ROS Topic --> D
 ```
 
 ## Nodes
