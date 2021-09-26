@@ -14,7 +14,7 @@ This repository consist of a ROS wrapper writter on top of Robomaster SDK. The R
 ## Structure
 
 ```
-graph TD
+flowchart LR
 A[Robomaster S1] -- Python SDK --> B((Talker Node))
 B -- ROS Topic --> D{ROS Master}
 A -- Python SDK --> C((Listener Node)) -- ROS Topic --> D
@@ -47,17 +47,31 @@ This node reads/listens the ROS messages which are sent from other machines, suc
 
 ### Parameters
 `~robomaster/ip`
+
 `~robomaster/version`
+
 `~robomaster/sn`
+
 `~robomaster/chassis_mode`
+
 `~robomaster/gimbal_mode`
+
 `~robomaster/chassis/static_flag`
+
 `~robomaster/chassis/up_hil`
+
 `~robomaster/chassis/down_hill`
+
 `~robomaster/chassis/on_slope`
+
 `~robomaster/chassis/pick_up`
+
 `~robomaster/chassis/impact_x`
+
 `~robomaster/chassis/impact_y`
+
 `~robomaster/chassis/impact_z`
+
 `~robomaster/chassis/roll_over`
+
 `~robomaster/chassis/hill_static`
