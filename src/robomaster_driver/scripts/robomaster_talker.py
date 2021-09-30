@@ -6,6 +6,7 @@ from std_msgs.msg import String, Float64
 from geometry_msgs.msg import Quaternion
 from sensor_msgs.msg import Image, Imu
 from cv_bridge import CvBridge, CvBridgeError
+from threading import Thread
 from robomaster import robot
 
 
@@ -23,29 +24,17 @@ class RobomasterTalker(robot.Robot):
         self.attitude_pub = rospy.Publisher('/robomaster/attitude', Quaternion, queue_size=10)
         self.esc_pub = rospy.Publisher('/robomaster/esc', String, queue_size=10)
         self.battery_pub = rospy.Publisher('/robomaster/battery', Float64, queue_size=10)
-        # Publish image data
-        self.get_image_msg()
-        time.sleep(3)
         # Publish imu data
-        self.chassis.sub_imu(freq=1, callback=self.get_imu_msg)
-        time.sleep(3)
-        self.chassis.unsub_imu()
+        self.imu_thread = Thread(target=self.chassis.sub_imu(freq=1, callback=self.get_imu_msg))
         # Publish attitude data
-        self.chassis.sub_attitude(freq=1, callback=self.get_attitude_msg)
-        time.sleep(3)
-        self.chassis.unsub_attitude()
+        self.attitude_thread = Thread(target=self.chassis.sub_attitude(freq=1, callback=self.get_attitude_msg))
         # Publish esc data
-        self.chassis.sub_esc(freq=1, callback=self.get_esc_msg)
-        time.sleep(3)
-        self.chassis.unsub_esc()
+        self.esc_thread = Thread(target=self.chassis.sub_esc(freq=1, callback=self.get_esc_msg))
         # Publish battery data
-        self.battery.sub_battery_info(1, self.get_battery_msg, robot.Robot())
-        time.sleep(3)
-        self.battery.unsub_battery_info()
+        self.battery_thread = Thread(target=self.battery.sub_battery_info(1, self.get_battery_msg, robot.Robot()))
         # Get status parameters
-        self.chassis.sub_status(freq=1, callback=self.get_status_params)
-        time.sleep(3)
-        self.chassis.unsub_status()
+        self.status_thread = Thread(target=self.chassis.sub_status(freq=1, callback=self.get_status_params))
+
 
     def get_image_msg(self):
         """
@@ -138,8 +127,22 @@ if __name__ == '__main__':
     print('Initializing robomaster_talker node')
     rospy.init_node('robomaster_talker')
     print('Navigating to robomaster_talker node')
+    rate = rospy.Rate(10) # 10hz
     # Take a loop until an interruption is made
     while not rospy.is_shutdown():
-        # Create an instance from talker class
         robomaster_talker = RobomasterTalker()
+
+        robomaster_talker.imu_thread.start()
+        robomaster_talker.attitude_threa.start()
+        robomaster_talker.esc_thread.start()
+        robomaster_talker.battery_thread.start()
+        robomaster_talker.status_thread.start()
+        robomaster_talker.image_process.start()
+
+    robomaster_talker.chassis.unsub_imu()
+    robomaster_talker.chassis.unsub_attitude()
+    robomaster_talker.chassis.unsub_esc()
+    robomaster_talker.battery.unsub_battery_info()
+    robomaster_talker.chassis.unsub_status()
+    robomaster_talker.camera.stop_video_stream()
     robomaster_talker.close()

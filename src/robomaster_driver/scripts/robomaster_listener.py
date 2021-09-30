@@ -20,7 +20,7 @@ class RobomasterListener(robot.Robot):
         self.sub_gimbal = rospy.Subscriber('/robomaster/gimbal', GimbalAngle , self.cb_gimbal)
 
     def cb_chassis(self, msg):
-        rospy.loginfo("[INFO] Subscribed to the chassis")
+        rospy.loginfo("Subscribed to the chassis")
         if self.chassis_mode == False :
             self.set_robot_mode(mode=robot.CHASSIS_LEAD)
             self.chassis_mode = True
@@ -30,7 +30,7 @@ class RobomasterListener(robot.Robot):
         self.led.set_led(comp=led.COMP_ALL, r=255, g=0, b=0, effect=led.EFFECT_ON)
 
     def cb_gimbal(self, msg):
-        rospy.loginfo("[INFO] Subscribed to the gimbal")
+        rospy.loginfo("Subscribed to the gimbal")
         if self.gimbal_mode == False:
             self.set_robot_mode(mode=robot.GIMBAL_LEAD)
             self.chassis_mode = False
