@@ -14,12 +14,10 @@ class RobomasterTalker(robot.Robot):
     def __init__(self, cli=None):
         super().__init__(cli=cli)
         self.initialize(conn_type="sta")
-        self.image_msg = Image()
         self.imu_msg = Imu()
         self.attitude_msg = Quaternion()
         self.esc_msg = String()
         self.battery_msg = Float64()
-        self.image_pub = rospy.Publisher('/robomaster/image', Image, queue_size=1)
         self.imu_pub = rospy.Publisher('/robomaster/imu', Imu, queue_size=10)
         self.attitude_pub = rospy.Publisher('/robomaster/attitude', Quaternion, queue_size=10)
         self.esc_pub = rospy.Publisher('/robomaster/esc', String, queue_size=10)
@@ -34,22 +32,6 @@ class RobomasterTalker(robot.Robot):
         self.battery_thread = Thread(target=self.battery.sub_battery_info(1, self.get_battery_msg, robot.Robot()))
         # Get status parameters
         self.status_thread = Thread(target=self.chassis.sub_status(freq=1, callback=self.get_status_params))
-
-
-    def get_image_msg(self):
-        """
-        Gets image data from Robomaster's Python SDK,
-        converts it from OpenCV image to a ROS message and
-        then publishes converted message to the relevant topic
-        """
-        rospy.loginfo("Importing image data from robomaster")
-        self.camera.start_video_stream(display=False)
-        try:
-            self.image_msg = CvBridge().cv2_to_imgmsg(self.camera.read_cv2_image(), "bgr8")
-            self.image_pub.publish(self.image_msg)
-        except CvBridgeError as e:
-            print(e)
-        self.camera.stop_video_stream()
 
     def get_imu_msg(self, imu_data):
         """
