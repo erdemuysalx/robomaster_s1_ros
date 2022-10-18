@@ -18,7 +18,8 @@ graph LR
 A[Robomaster S1] -- Python SDK --> B((Talker Node))
 B -- ROS Topic --> D{ROS Master}
 A -- Python SDK --> C((Listener Node)) -- ROS Topic --> D
-```on SDK --> C((Listener Node)) -- ROS Topic --> D
+```
+on SDK --> C((Listener Node)) -- ROS Topic --> D
 ```
 
 ## Nodes
