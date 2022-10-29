@@ -5,11 +5,12 @@ This repository consist of a ROS wrapper writter on top of Robomaster SDK. The R
 
 ### Build from source
 
-`$ cd <catkin_ws/src>`
-`$ git clone https://github.com/erdemuysalx/robomaster_s1_ros.git`
-`$ cd ..`
-`$ catkin build`
-`$ source devel/setup.bash`
+```$ cd <catkin_ws/src>
+$ git clone https://github.com/erdemuysalx/robomaster_s1_ros.git
+$ cd ..
+$ catkin build
+$ source devel/setup.bash
+```
 
 ## Structure
 
@@ -43,36 +44,23 @@ This node reads/listens the ROS messages which are sent from other machines, suc
 
 #### Subscribed Topics
 `geometyr_msgs/Twist.msg` from `/robomaster/chassis`
-
 `geometyr_msgs/Twist.msg` from `/robomaster/gimbal`
 
 ### Parameters
-`~robomaster/ip`
-
-`~robomaster/version`
-
-`~robomaster/sn`
-
-`~robomaster/chassis_mode`
-
-`~robomaster/gimbal_mode`
-
-`~robomaster/chassis/static_flag`
-
-`~robomaster/chassis/up_hil`
-
-`~robomaster/chassis/down_hill`
-
-`~robomaster/chassis/on_slope`
-
-`~robomaster/chassis/pick_up`
-
-`~robomaster/chassis/impact_x`
-
-`~robomaster/chassis/impact_y`
-
-`~robomaster/chassis/impact_z`
-
-`~robomaster/chassis/roll_over`
-
-`~robomaster/chassis/hill_static`
+```
+~robomaster/ip
+~robomaster/version
+~robomaster/sn
+~robomaster/chassis_mode
+~robomaster/gimbal_mode
+~robomaster/chassis/static_flag
+~robomaster/chassis/up_hil
+~robomaster/chassis/down_hill
+~robomaster/chassis/on_slope
+~robomaster/chassis/pick_up
+~robomaster/chassis/impact_x
+~robomaster/chassis/impact_y
+~robomaster/chassis/impact_z
+~robomaster/chassis/roll_over
+~robomaster/chassis/hill_static
+```
